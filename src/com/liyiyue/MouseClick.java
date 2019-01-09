@@ -134,33 +134,37 @@ public class MouseClick extends JFrame {
 		getContentPane().add(help);
 
 		// 注册全局快捷键
-		JIntellitype.getInstance().registerHotKey(0, JIntellitype.MOD_ALT, 'L');
-		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_ALT, 'K');
-		JIntellitype.getInstance().addHotKeyListener(new HotkeyListener() {
-			@Override
-			public void onHotKey(int keyCode) {
-				switch (keyCode) {
-				case 0:
-					if (!starting) {
-						executor.execute(new Runnable() {
-							@Override
-							public void run() {
-								start();
-							}
-						});
-					} else {
-						stop();
+		try {
+			JIntellitype.getInstance().registerHotKey(0, JIntellitype.MOD_ALT, 'L');
+			JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_ALT, 'K');
+			JIntellitype.getInstance().addHotKeyListener(new HotkeyListener() {
+				@Override
+				public void onHotKey(int keyCode) {
+					switch (keyCode) {
+					case 0:
+						if (!starting) {
+							executor.execute(new Runnable() {
+								@Override
+								public void run() {
+									start();
+								}
+							});
+						} else {
+							stop();
+						}
+						break;
+					case 1:
+						if (!starting) {
+							catchAMousePos();
+						}
+					default:
+						break;
 					}
-					break;
-				case 1:
-					if (!starting) {
-						catchAMousePos();
-					}
-				default:
-					break;
 				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			showMsg(e.toString());
+		}
 	}
 
 	class PosManager {
